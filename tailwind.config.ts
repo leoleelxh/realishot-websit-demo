@@ -17,6 +17,9 @@ export default {
         'gradient-x': 'gradient-x 15s ease infinite',
         'gradient-y': 'gradient-y 15s ease infinite',
         'gradient-xy': 'gradient-xy 15s ease infinite',
+        'gradient-spin': 'gradient-spin 20s linear infinite',
+        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'gradient-move': 'gradient-move 8s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -46,6 +49,18 @@ export default {
           '50%': {
             'background-position': '0 0',
           },
+        },
+        'gradient-spin': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        'gradient-move': {
+          '0%, 100%': {
+            transform: 'translate(0%, 0%) rotate(30deg)',
+          },
+          '50%': {
+            transform: 'translate(-20%, 0%) rotate(30deg)',
+          }
         },
       },
     },

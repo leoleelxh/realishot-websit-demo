@@ -29,17 +29,22 @@ const filterOptions: FilterOption[] = [
 interface SearchFilterProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
-  onFilterChange: (filter: string) => void;
+  onFilterChange: (type: string, value: string | null) => void;
+  activeFilters: {[key: string]: string};
 }
 
-export default function SearchFilter({ searchTerm, onSearchChange, onFilterChange }: SearchFilterProps) {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+export default function SearchFilter({ 
+  searchTerm, 
+  onSearchChange, 
+  onFilterChange,
+  activeFilters 
+}: SearchFilterProps) {
   const [showOptions, setShowOptions] = useState<string | null>(null);
 
   return (
-    <div className="bg-white bg-opacity-90 backdrop-blur-lg p-6 rounded-xl shadow-lg">
+    <div className="bg-white/90 backdrop-blur-lg p-8 rounded-xl shadow-lg">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-500 
+        <h1 className="text-xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-500 
                       text-transparent bg-clip-text">
           搜索结果: "美妆个护"
         </h1>
@@ -52,10 +57,9 @@ export default function SearchFilter({ searchTerm, onSearchChange, onFilterChang
                 value={searchTerm}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="搜索产品..."
-                className="w-full px-6 py-3 border border-purple-100 rounded-full
+                className="w-full px-6 py-2.5 text-sm border border-purple-100 rounded-full
                           focus:ring-2 focus:ring-purple-200 focus:border-purple-300
-                          outline-none transition-all duration-300
-                          shadow-sm hover:shadow-md"
+                          outline-none transition-all duration-300"
               />
               <button className="absolute right-4 top-1/2 -translate-y-1/2
                                 text-purple-400 hover:text-purple-600">
@@ -69,18 +73,29 @@ export default function SearchFilter({ searchTerm, onSearchChange, onFilterChang
           {filterOptions.map((filter) => (
             <div key={filter.type} className="relative">
               <button
-                className={`relative px-6 py-2 border rounded-full transition-all duration-300 overflow-hidden
-                            ${showOptions === filter.type 
-                              ? 'bg-purple-500 text-white border-purple-500' 
+                className={`relative px-6 py-2 text-sm border rounded-full transition-all duration-300 overflow-hidden
+                            ${activeFilters[filter.type] 
+                              ? 'border-transparent'
                               : 'border-purple-200 text-purple-600 hover:border-purple-300'}`}
                 onClick={() => {
-                  setShowOptions(showOptions === filter.type ? null : filter.type);
+                  if (activeFilters[filter.type]) {
+                    onFilterChange(filter.type, null);
+                    setShowOptions(null);
+                  } else {
+                    setShowOptions(showOptions === filter.type ? null : filter.type);
+                  }
                 }}
               >
-                <div className={`absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 
-                                transition-opacity duration-300 ${showOptions === filter.type ? 'opacity-100' : 'group-hover:opacity-10'}`}
+                <div className={`absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 
+                                transition-opacity duration-300 
+                                ${activeFilters[filter.type] ? 'opacity-100' : 'group-hover:opacity-10'}`}
                 />
-                <span className="relative">{filter.type}</span>
+                <span className={`relative ${activeFilters[filter.type] ? 'text-white' : ''}`}>
+                  {filter.type}
+                  {activeFilters[filter.type] && (
+                    <span className="ml-2">: {activeFilters[filter.type]}</span>
+                  )}
+                </span>
               </button>
               
               {/* 下拉选项 */}
@@ -94,11 +109,10 @@ export default function SearchFilter({ searchTerm, onSearchChange, onFilterChang
                         <button
                           key={option}
                           className={`w-full text-left px-4 py-2 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 text-sm
-                                    ${activeFilter === option ? 'text-purple-600 font-medium' : 'text-gray-600'}
+                                    ${activeFilters[filter.type] === option ? 'text-purple-600 font-medium' : 'text-gray-600'}
                                     transition-colors duration-300`}
                           onClick={() => {
-                            setActiveFilter(option);
-                            onFilterChange(option);
+                            onFilterChange(filter.type, option);
                             setShowOptions(null);
                           }}
                         >

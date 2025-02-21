@@ -15,8 +15,6 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
       onClick={() => onClick(product)}
     >
       <div className="relative aspect-[4/3] bg-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-100/30 via-transparent to-pink-100/30 
-                      opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <Image
           src={product.image}
           alt={`${product.manufacturer} ${product.series}`}
