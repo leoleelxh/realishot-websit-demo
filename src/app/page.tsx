@@ -19,12 +19,10 @@ export default function Home() {
   const [filters, setFilters] = useState<{[key: string]: string}>({});
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
 
   // 初始加载
   useEffect(() => {
     setDisplayedProducts(products.slice(0, 12));
-    setHasMore(products.length > 12);
   }, []);
 
   // 简化的筛选处理

@@ -46,7 +46,7 @@ export default function SearchFilter({
       <div className="max-w-7xl mx-auto">
         <h1 className="text-xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-500 
                       text-transparent bg-clip-text">
-          搜索结果: "美妆个护"
+          搜索结果: &quot;美妆个护&quot;
         </h1>
         
         <div className="flex gap-4 items-center mb-6">
