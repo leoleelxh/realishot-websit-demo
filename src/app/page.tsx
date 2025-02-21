@@ -27,27 +27,59 @@ export default function Home() {
     setHasMore(products.length > 12);
   }, []);
 
-  // 无限加载处理
+  // 简化的筛选处理
+  const handleFilter = useCallback((type: string, value: string | null) => {
+    setFilters(prev => {
+      const newFilters = { ...prev };
+      if (value === null) {
+        delete newFilters[type];
+      } else {
+        newFilters[type] = value;
+      }
+      return newFilters;
+    });
+
+    // 简单的随机重排效果
+    if (value === null) {
+      // 如果取消筛选,恢复原始顺序
+      setDisplayedProducts(products.slice(0, 12));
+    } else {
+      // 随机重排所有产品并显示前12个
+      const shuffled = [...products]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 12);
+      setDisplayedProducts(shuffled);
+    }
+
+    // 重置分页
+    setPage(1);
+  }, []);
+
+  // 修改loadMore逻辑,保持随机效果
   const loadMore = useCallback(() => {
-    if (loading || !hasMore) return;
+    if (loading) return;
 
     setLoading(true);
-    // 模拟API请求延迟
     setTimeout(() => {
-      const start = page * 12;
-      const end = start + 12;
-      
-      // 如果还有真实产品,就加载真实产品
-      if (start < products.length) {
-        const nextProducts = products.slice(start, Math.min(end, products.length));
-        setDisplayedProducts(prev => [...prev, ...nextProducts]);
+      // 如果有筛选条件,继续随机展示
+      if (Object.keys(filters).length > 0) {
+        const shuffled = [...products]
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 12);
+        setDisplayedProducts(prev => [...prev, ...shuffled]);
+      } else {
+        // 否则按正常顺序加载
+        const start = page * 12;
+        const end = start + 12;
+        if (start < products.length) {
+          const nextProducts = products.slice(start, Math.min(end, products.length));
+          setDisplayedProducts(prev => [...prev, ...nextProducts]);
+        }
       }
-      
       setPage(prev => prev + 1);
-      setHasMore(products.length > (page + 1) * 12);
       setLoading(false);
     }, 800);
-  }, [page, loading, hasMore]);
+  }, [page, loading, filters]);
 
   // 监听滚动
   useEffect(() => {
@@ -60,24 +92,6 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loadMore]);
-
-  // 筛选处理
-  const handleFilter = useCallback((type: string, value: string | null) => {
-    setFilters(prev => {
-      const newFilters = { ...prev };
-      if (value === null) {
-        delete newFilters[type];
-      } else {
-        newFilters[type] = value;
-      }
-      return newFilters;
-    });
-
-    // 重置分页和产品显示
-    setPage(1);
-    setDisplayedProducts(products.slice(0, 12));
-    setHasMore(products.length > 12);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">

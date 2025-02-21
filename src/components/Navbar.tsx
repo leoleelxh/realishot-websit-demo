@@ -28,7 +28,7 @@ export default function Navbar() {
       {/* 内容区域 */}
       <div className="relative max-w-7xl mx-auto">
         <div className="flex justify-between items-center px-6 py-6">
-          <div className="text-3xl font-bold text-white tracking-wide">Realibox</div>
+          <div className="text-3xl font-bold text-white tracking-wide">Realibox | 包材展销平台</div>
           <div className="flex gap-4">
             <Link 
               href="/login" 
