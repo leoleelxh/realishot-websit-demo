@@ -11,11 +11,11 @@ const series = [
   '东方美学系列', '简约优雅系列'
 ];
 
-// 生成40个产品数据
+// 创建固定的产品数据而不是随机生成
 export const products: Product[] = Array.from({ length: 40 }, (_, i) => ({
   id: String(i + 1),
-  manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
-  series: series[Math.floor(Math.random() * series.length)],
+  manufacturer: manufacturers[i % manufacturers.length], // 使用固定的索引
+  series: series[Math.floor(i / 4) % series.length], // 使用固定的索引
   image: `/images/set_${String(i + 1).padStart(2, '0')}.jpg`,
   modelUrl: 'https://studio.realibox.com/share?id=44edc49d082819eebbca7f5fcf21cd03'
 })); 

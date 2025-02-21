@@ -8,7 +8,7 @@ export default function ProductModal({ modelUrl, isOpen, onClose }: ProductModal
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 p-4 md:p-8">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-[200] p-4 md:p-8">
       <div className="relative bg-white rounded-xl w-full max-w-[calc(100vw-2rem)] md:max-w-[calc(100vw-4rem)] mx-auto">
         <button 
           onClick={onClose}
