@@ -10,8 +10,6 @@ import ProductSkeleton from '@/components/ProductSkeleton';
 import BackToTop from '@/components/BackToTop';
 import { Product } from '@/types/product';
 
-const ITEMS_PER_PAGE = 12; // 每页显示的产品数量
-
 export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
